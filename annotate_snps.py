@@ -18,6 +18,9 @@ def main(args):
         bed = pd.read_csv(args.annot_bed[i], header=None, delimiter='\t')
         annot_name = os.path.basename(args.annot_bed[i])[:-4]
         annot_names.append(annot_name)
+        if args.chr is not None:
+            args.chr = trees._format_chrom(args.chr)
+            bed = bed[bed[0] == args.chr]
         bed.apply(lambda x: trees.insert(x[0], x[1]-1, x[2]+1, i), axis=1)
         idx = snps.apply(lambda x: trees.find(x[0], x[3], x[3]), axis=1)
         [[annot_matrix.itemset((j, i), 1) for _ in v] for j, v in idx.iteritems()]
@@ -35,6 +38,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--out', default=None, type=str, required=True)
     parser.add_argument('--bfile', default=None, type=str, required=True)
+    parser.add_argument('--chr', default=None, type=str)
     parser.add_argument('--annot-bed', default=None, type=str, nargs='+')
     parser.add_argument('--annot-bed-list', default=None, type=str)
     parser.add_argument('--only-annot', default=False, action='store_true')

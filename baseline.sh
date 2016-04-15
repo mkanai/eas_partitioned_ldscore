@@ -25,6 +25,6 @@ BEGIN {
 {print $1, $4, $2, $3, "1"}
 ' > $bfilename/base.annot
 
-cat $bedfilelist | tail -n+2 | awk -v d=$bedfiledir '$0{print d"/"$0".bed"}' | parallel $basedir/annotate_snps.py --bfile $bfile --annot-bed {} --only-annot --out $bfilename/{/.}
+cat $bedfilelist | tail -n+2 | awk -v d=$bedfiledir '$0{print d"/"$0".bed"}' | parallel $basedir/annotate_snps.py --bfile $bfile --chr $chr --annot-bed {} --only-annot --out $bfilename/{/.}
 cat $bedfilelist | awk -v d=$bfilename '$0{print d"/"$0".annot"}' | xargs paste -d$'\t' | gzip -c > baseline.$chr.annot.gz
 
