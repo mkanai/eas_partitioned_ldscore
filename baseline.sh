@@ -9,6 +9,10 @@ set -eu
 basedir=$(cd $(dirname $0) && pwd)
 bedfilelist="$basedir/baseline_bedfiles.txt"
 
+# ldscdir=path/to/ldscdir
+ldsc=$ldscdir/ldsc.py
+snps=$ldscdir/hapmap3_snps
+
 bfile=$1
 bim=$bfile.bim
 bfilename=$(basename $bfile)
@@ -28,3 +32,4 @@ BEGIN {
 cat $bedfilelist | tail -n+2 | awk -v d=$bedfiledir '$0{print d"/"$0".bed"}' | parallel $basedir/annotate_snps.py --bfile $bfile --chr $chr --annot-bed {} --only-annot --out $bfilename/{/.}
 cat $bedfilelist | awk -v d=$bfilename '$0{print d"/"$0".annot"}' | xargs paste -d$'\t' | gzip -c > baseline.$chr.annot.gz
 
+$ldsc --l2 --bfile $bfile --ld-wind-cm 1 --annot baseline.$chr.annot.gz --out baseline.$chr --print-snps $snps/hm.$chr.snp

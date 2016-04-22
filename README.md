@@ -1,21 +1,35 @@
 # Partitioned LD Scores for the EAS population
 
-The aim of this repository is to provide a pre-calculated partitioned LD Score for the EAS population, which is used in the [`ldsc`](https://github.com/bulik/ldsc) partitioning heritability analysis.
+The aim of this repository is to provide a pre-computed partitioned LD Score for the EAS population, which is used in the [`ldsc`](https://github.com/bulik/ldsc) partitioning heritability analysis.
 
 **The files are yet incomplete and still undergoes a validation process.**
 
 ## Requirements
-* Python
-* GNU Parallel (to be replaced)
+These requirements are only for those who want to reproduce our calculations. You can use our pre-computed partitioned LD scores by just downloading them.
+
+* [Python](https://www.python.org/)
+* [GNU Parallel](http://www.gnu.org/software/parallel/) (to be replaced)
+* [ldsc](https://github.com/bulik/ldsc)
+* [Git LFS](https://git-lfs.github.com/)
 
 ### Python packages
 * [numpy](http://www.numpy.org/)
 * [pandas](http://pandas.pydata.org/)
 * [bx-python](https://pypi.python.org/pypi/bx-python)
 
+### Datasets
+* The 1000 Genomes Projects Phase 3 (version 5a) dataset
+    * The original `.vcf` files were retrieved from their [ftp site](ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/).
+    * We then converted them to appropriate PLINK `.bed` format by using `utils/convert2plink.sh`.
+    * All PLINK files are provided as `1000G_plinkfiles_EAS.tar.gz`. Users do *not* have to download the original 1000 Genomes Project dataset.
+
+* The original `.bed` files for annotation provided by the authors.
+    * Please retrieve them from [here](http://data.broadinstitute.org/alkesgroup/LDSCORE/baseline_bedfiles.tgz), and place it appropriately.
+    * Then, edit `baseline.sh` to set the path to these files.
+
 ## Usage
 
-To generate baseline annotations, I ran the following command. More detailed documentation/help will be added.
+To generate baseline ldscores, I ran the following command. More detailed documentation/help will be added.
 ```bash
 mkdir baseline && cd $_
 for chr in $(seq 22); do
@@ -34,4 +48,3 @@ done
 Masahiro Kanai
 * masahiro.kanai@riken.jp
 * http://mkanai.github.io/
-
