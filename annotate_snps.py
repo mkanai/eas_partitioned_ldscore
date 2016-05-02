@@ -16,7 +16,7 @@ def main(args):
     for i in range(n_annot):
         trees = ChromTree()
         bed = pd.read_csv(args.annot_bed[i], header=None, delimiter='\t')
-        annot_name = os.path.basename(args.annot_bed[i])[:-4]
+        annot_name = os.path.basename(args.annot_bed[i])[:-4] if args.annot_name[i] is None else args.annot_name[i]
         annot_names.append(annot_name)
         if args.chr is not None:
             args.chr = trees._format_chrom(args.chr)
@@ -41,6 +41,7 @@ if __name__ == '__main__':
     parser.add_argument('--chr', default=None, type=str)
     parser.add_argument('--annot-bed', default=None, type=str, nargs='+')
     parser.add_argument('--annot-bed-list', default=None, type=str)
+    parser.add_argument('--annot-name', default=None, type=str, nargs='+')
     parser.add_argument('--only-annot', default=False, action='store_true')
     args = parser.parse_args()
 
@@ -49,5 +50,8 @@ if __name__ == '__main__':
         with open(args.annot_bed_list, 'r') as f:
             for line in f:
                 args.annot_bed.append(line.strip())
-    main(args)
 
+    if len(args.annot_bed) != len(args.annot_name):
+        raise ValueError('--annot-bed and --annot-name must be the same length.')
+
+    main(args)

@@ -5,11 +5,11 @@ set -eu
 # Be sure to set the appropriate path to the bedfiles for $bedfiledir.
 # (download http://data.broadinstitute.org/alkesgroup/LDSCORE/baseline_bedfiles.tgz & extract it).
 #
-# bedfiledir=path/to/baseline_bedfiles
+bedfiledir=~/src/github.com/bulik/ldsc/baseline
 basedir=$(cd $(dirname $0) && pwd)
 bedfilelist="$basedir/baseline_bedfiles.txt"
 
-# ldscdir=path/to/ldscdir
+ldscdir=~/src/github.com/bulik/ldsc
 ldsc=$ldscdir/ldsc.py
 snps=$ldscdir/hapmap3_snps
 
