@@ -19,6 +19,5 @@ bfilename=$(basename $bfile)
 chr=${bfilename##*.}
 
 cat $bedfilelist | tail -n+2 | awk -v d=$bedfiledir '$0{print d"/"$1".bed", $2}' | parallel --col-sep ' ' $basedir/annotate_snps.py --bfile $bfile --chr $chr --annot-bed {1} --annot-name {2/.} --out {2/.}.$chr
-gzip *.$chr.annot
 
 cat $bedfilelist | tail -n+2 | cut -f2 | parallel -j4 $ldsc --l2 --bfile $bfile --ld-wind-cm 1 --annot {.}.$chr.annot.gz --out {.}.$chr --print-snps $snps/hm.$chr.snp
